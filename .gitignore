@@ -1,0 +1,16 @@
+# Local product roadmap and planning files
+/.product-roadmap.md
+
+# Environment files
+backend/.env
+.env
+
+# Local virtual environments
+backend/venv/
+venv/
+
+# Python cache files
+__pycache__/
+*.pyc
+
+

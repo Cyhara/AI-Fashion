@@ -86,7 +86,7 @@ Then visit:
 - `http://localhost:8000` for the frontend
 - `http://localhost:8000/docs` for the FastAPI Swagger docs if serving from the backend on the default port 8000
 
-If you are running the backend separately, the API will typically be available at:
+If you are running the backend separately, the API will typically be available at:1
 
 - `http://localhost:8000`
 
@@ -103,8 +103,3 @@ If you are running the backend separately, the API will typically be available a
 
 - The frontend is a static page using plain HTML/CSS/JS.
 - The backend is responsible for connecting to the external AI service.
-- This project is intended for local development and experimentation.
-
-## License
-
-This project currently does not include a formal license file.
