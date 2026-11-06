@@ -1,423 +1,591 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Tells the browser which character encoding to use -->
     <meta charset="UTF-8">
-
-    <!-- Makes the website responsive on phones, tablets, and computers -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Text displayed on the browser tab -->
     <title>StyleAI | Your Personal AI Fashion Stylist</title>
 
-    <!-- Connect our HTML file to our css file -->
-     <link rel="stylesheet" href="style.css">
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css">
 
-     <!-- Google Fonts -->
-      <link rel="preconnect" href="https://fonts.googleapis.com">
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-      <!-- Playfair Display for headings and Poppins for normal text -->
-       <link
-            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 </head>
 
 <body>
-    <!-- NAVIGATION BAR -->
-     <header class="navbar">
 
-        <!-- Website logo -->
-         <a href="#home" class="logo">
-            style<span>AI</span>
-         </a>
+    <!-- =========================
+         NAVIGATION
+    ========================== -->
+    <header class="navbar">
+        <a href="#home" class="logo">style<span>AI</span></a>
 
-         <!-- Main navigation links -->
-          <nav>
+        <nav class="nav-links" id="navLinks">
             <a href="#home" class="active">Home</a>
             <a href="#discover">Discover</a>
             <a href="#stylist">AI Stylist</a>
-            <a href="#wardrode">Wardrobe</a>
+            <a href="#wardrobe">Wardrobe</a>
             <a href="#about">About</a>
-         </nav>
+        </nav>
 
-          <!-- Sign-in button -->
-           <button class="signin-btn">
-                Sign In
-           </button>
+        <div class="nav-actions">
+            <button
+                type="button"
+                class="theme-toggle"
+                id="themeToggle"
+                aria-label="Switch to dark mode"
+                aria-pressed="false"
+                title="Switch to dark mode"
+            >
+                ☾
+            </button>
 
-     </header>
+            <button type="button" class="signin-btn" id="authButton">
+                Sign in
+            </button>
+            <button
+                type="button"
+                class="delete-account-btn"
+                id="deleteAccountButton"
+                hidden
+            >
+                Delete account
+            </button>
+        </div>
 
-     <!-- MAIN CONTENT -->
-      <main id="home">
-        
-         <!-- HERO SECTION -->
-          <section class="hero">
+        <button
+            class="menu-toggle"
+            id="menuToggle"
+            aria-label="Toggle navigation"
+            aria-expanded="false"
+        >
+            ☰
+        </button>
+    </header>
 
-            <!-- Left side of hero section -->
-             <div class="hero-content">
 
-               <!-- small heading -->
+    <main>
+
+        <!-- =========================
+             HERO SECTION
+        ========================== -->
+        <section class="hero" id="home">
+
+            <div class="hero-content">
+
                 <p class="small-title">
-                  YOUR PERSONAL AI FASHION STYLIST
+                    YOUR PERSONAL AI FASHION STYLIST
                 </p>
 
-                <!-- Main website heading -->
-                 <h1>
-                     Discover Your 
-                     <span>Perfect Style.</span>
-                 </h1>
+                <h1>
+                    Discover Your
+                    <span>Perfect Style.</span>
+                </h1>
 
-                 <!-- Introduction -->
-                  <p class="hero-text">
-                     Let AI help you create outfits that match 
-                     your personality, occasion, body style and budget.
-                  </p>
+                <p class="hero-text">
+                    Let AI help you create outfits that match your
+                    personality, occasion, body style and budget.
+                </p>
 
-                  <!-- Hero buttons -->
-                   <div class="hero-buttons">
+                <div class="hero-buttons">
 
-                     <!-- Button that will eventually open our AI stylist -->
-                      <button class="primary-btn" id="heroAiButton">
-
-                        <span>
+                    <button class="primary-btn" id="heroAiButton">
                         Get Styled by AI
-                        </span>
+                        <span class="arrow">→</span>
+                    </button>
 
-                        <span class="arrow">
-                           →
-                        </span>
-
-                      </button>
-
-                      <!-- Scrolls to fashion categories -->
-                       <button class="secondary-btn" id="exploreButton">
+                    <button class="secondary-btn" id="exploreButton">
                         Explore Looks
-                       </button>
+                    </button>
 
-                   </div>
+                </div>
 
-                   <!-- Website statistics -->
-                    <div class="hero-stats">
+                <div class="hero-stats">
 
-                     <!-- Stles -->
-                     <div>
+                    <div>
                         <strong>10k+</strong>
                         <span>Styles</span>
-                     </div>
+                    </div>
 
-                     <!-- Users -->
-                     <div>
+                    <div>
                         <strong>5k+</strong>
                         <span>Happy users</span>
-                     </div>
+                    </div>
 
-                     <!-- AI -->
-                     <div class="no-border">
+                    <div class="no-border">
                         <strong>AI</strong>
                         <span>Powered</span>
-                     </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-image">
+
+                <div class="image-card">
+                    <img
+                        src="../images/hero-fashion.png"
+                        alt="Elegant fashion model"
+                    >
+                </div>
+
+                <div class="floating-card">
+                    <span>✨</span>
+
+                    <div>
+                        <strong>AI Recommended</strong>
+                        <p>Elegant · Modern · Chic</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             DISCOVER SECTION
+        ========================== -->
+        <section class="discover section-padding" id="discover">
+
+            <div class="section-heading">
+
+                <p class="small-title">EXPLORE YOUR STYLE</p>
+
+                <h2>Find Your Fashion Vibe</h2>
+
+                <p>
+                    Discover styles that fit your personality and lifestyle.
+                </p>
+
+            </div>
+
+
+            <div class="style-grid">
+
+                <article class="style-card">
+                    <div class="style-image casual"></div>
+
+                    <h3>Casual</h3>
+                    <p>Relaxed &amp; Effortless</p>
+                </article>
+
+
+                <article class="style-card">
+                    <div class="style-image elegant"></div>
+
+                    <h3>Elegant</h3>
+                    <p>Classy &amp; Sophisticated</p>
+                </article>
+
+
+                <article class="style-card">
+                    <div class="style-image street"></div>
+
+                    <h3>Streetwear</h3>
+                    <p>Bold &amp; Expressive</p>
+                </article>
+
+
+                <article class="style-card">
+                    <div class="style-image business"></div>
+
+                    <h3>Business</h3>
+                    <p>Professional &amp; Polished</p>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             HOW IT WORKS
+        ========================== -->
+        <section class="how-it-works section-padding" id="about">
+
+            <div class="section-heading">
+
+                <p class="small-title">HOW IT WORKS</p>
+
+                <h2>Style Made Simple</h2>
+
+                <p>
+                    Creating your next look is easier with StyleAI.
+                </p>
+
+            </div>
+
+
+            <div class="steps">
+
+                <article class="step">
+                    <div class="step-number">01</div>
+
+                    <h3>Tell Us Your Style</h3>
+
+                    <p>
+                        Choose your preferred fashion style, colours,
+                        occasion and budget.
+                    </p>
+                </article>
+
+
+                <article class="step">
+                    <div class="step-number">02</div>
+
+                    <h3>Let AI Create</h3>
+
+                    <p>
+                        Upload your photos and let AI create a
+                        personalized outfit.
+                    </p>
+                </article>
+
+
+                <article class="step">
+                    <div class="step-number">03</div>
+
+                    <h3>Wear Your Look</h3>
+
+                    <p>
+                        Explore your new outfit and discover a style
+                        you love.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AI OUTFIT GENERATOR
+        ========================== -->
+        <section class="outfit-generator section-padding" id="outfit-generator">
+
+            <div class="generator-heading">
+
+                <p class="small-title">
+                    YOUR PERSONAL AI FASHION STUDIO
+                </p>
+
+                <h2>
+                    Transform Your Look with
+                    <span>StyleAI</span>
+                </h2>
+
+                <p>
+                    Upload a model photo and a clothing photo.
+                    Let AI bring your fashion idea to life.
+                </p>
+
+            </div>
+
+
+            <div class="upload-container">
+
+                <!-- MODEL PHOTO -->
+                <div class="upload-card">
+
+                    <div class="upload-number">01</div>
+
+                    <h3>Upload Model Photo</h3>
+
+                    <p>
+                        Choose a photo of the person who will wear the outfit.
+                    </p>
+
+                    <label for="modelImage" class="upload-area">
+
+                        <span class="upload-icon">＋</span>
+
+                        <strong>Choose Model Photo</strong>
+
+                        <small>JPG, PNG, WEBP or AVIF</small>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="modelImage"
+                        accept="image/jpeg,image/png,image/webp,image/avif"
+                        hidden
+                    >
+
+                    <div class="preview-container" id="modelPreviewContainer" hidden>
+
+                        <img
+                            id="modelPreview"
+                            alt="Model photo preview"
+                        >
+
+                        <button
+                            type="button"
+                            class="remove-image"
+                            id="removeModelImage"
+                        >
+                            Remove photo
+                        </button>
 
                     </div>
 
-             </div>
+                </div>
 
-             <!-- Right side of hero section -->
-            <div class="hero-image">
 
-               <!-- Main fashion image -->
-               <div class="image-card">
+                <!-- CLOTHING PHOTO -->
+                <div class="upload-card">
 
-                  <img src="../images/hero-fashion.png"
-                        alt="Elegant fashion model">
+                    <div class="upload-number">02</div>
 
-               </div>
+                    <h3>Upload Clothing Photo</h3>
 
-               <!-- Floating AI recommendation card -->
-               <div class="floating-card">
+                    <p>
+                        Choose the clothing you want the model to wear.
+                    </p>
 
-                  <span>✨</span>
+                    <label for="clothingImage" class="upload-area">
 
-                  <div>
-                     <strong>AI Recommended</strong>
+                        <span class="upload-icon">＋</span>
 
-                     <p>
-                        Elegant • Modern • Chic 
-                     </p>
-                  </div>
+                        <strong>Choose Clothing Photo</strong>
 
-               </div>
+                        <small>JPG, PNG, WEBP or AVIF</small>
+
+                    </label>
+
+                    <input
+                        type="file"
+                        id="clothingImage"
+                        accept="image/jpeg,image/png,image/webp,image/avif"
+                        hidden
+                    >
+
+                    <div class="preview-container" id="clothingPreviewContainer" hidden>
+
+                        <img
+                            id="clothingPreview"
+                            alt="Clothing photo preview"
+                        >
+
+                        <button
+                            type="button"
+                            class="remove-image"
+                            id="removeClothingImage"
+                        >
+                            Remove photo
+                        </button>
+
+                    </div>
+
+                </div>
 
             </div>
 
-          </section>
 
-          <!-- DISCOVER SECTION -->
-           <section class="discover" id="discover">
+            <div class="generate-area">
 
-            <!-- Section heading -->
+                <button
+                    type="button"
+                    class="primary-btn generate-btn"
+                    id="generateOutfitButton"
+                >
+                    <span id="generateButtonText">Generate My Outfit</span>
+                    <span>✦</span>
+                </button>
+
+                <p id="generationStatus" role="status" aria-live="polite"></p>
+
+            </div>
+
+
+            <!-- GENERATION RESULT -->
+            <div id="generatedResult" class="generated-result" hidden>
+
+                <div class="result-heading">
+
+                    <p class="small-title">YOUR NEW LOOK</p>
+
+                    <h3>Your AI-Generated Outfit</h3>
+
+                    <p>
+                        Your fashion transformation is ready.
+                    </p>
+
+                </div>
+
+                <img
+                    id="generatedImage"
+                    alt="AI-generated outfit"
+                >
+
+                <div class="result-actions">
+
+                    <a
+                        id="downloadOutfit"
+                        class="primary-btn download-btn"
+                        href="#"
+                        download="styleai-outfit.png"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        View / Download Outfit
+                    </a>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             AI STYLIST SECTION
+        ========================== -->
+        <section class="ai-stylist section-padding" id="stylist">
+
+            <div class="ai-content">
+
+                <p class="small-title">MEET YOUR AI STYLIST</p>
+
+                <h2>
+                    Your Style.
+                    <span>Powered by AI.</span>
+                </h2>
+
+                <p>
+                    Tell StyleAI what you're looking for and explore
+                    personalized outfit ideas.
+                </p>
+
+                <button class="primary-btn" id="stylistButton">
+                    Try AI Stylist
+                    <span class="arrow">→</span>
+                </button>
+
+            </div>
+
+
+            <div class="ai-box">
+
+                <div class="chat-header">
+                    <div class="chat-avatar">✦</div>
+
+                    <div>
+                        <strong>StyleAI Assistant</strong>
+                        <small>Fashion inspiration</small>
+                    </div>
+                </div>
+
+
+                <div class="chat-messages" id="chatMessages">
+
+                    <div class="chat-message ai-message">
+                        Hello! I'm your StyleAI fashion assistant.
+                        What kind of look are you planning?
+                    </div>
+
+                    <div class="chat-message user-message">
+                        I need an elegant outfit for a wedding.
+                    </div>
+
+                    <div class="chat-message ai-message">
+                        ✨ Consider a sophisticated evening dress
+                        paired with gold accessories and elegant heels.
+                    </div>
+
+                </div>
+
+
+                <div class="chat-input">
+
+                    <input
+                        type="text"
+                        id="styleInput"
+                        placeholder="Ask your AI stylist..."
+                        aria-label="Message your stylist"
+                    >
+
+                    <button
+                        type="button"
+                        id="sendStyleButton"
+                        aria-label="Send message"
+                    >
+                        ➤
+                    </button>
+
+                </div>
+
+                <p class="chat-note">
+                    Fashion chat is currently a demonstration.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             WARDROBE SECTION
+        ========================== -->
+        <section class="wardrobe-section section-padding" id="wardrobe">
+
             <div class="section-heading">
 
-               <p class="small-title">
-                  EXPLORE YOUR STYLE
-               </p>
+                <p class="small-title">YOUR DIGITAL WARDROBE</p>
 
-               <h2>
-                  Find Your Fashion Vibe
-               </h2>
+                <h2>
+                    Your Clothes.
+                    <span>Your Style.</span>
+                </h2>
 
-               <p>
-                  Discover styles that fit your personality and lifestyle.
-               </p>
+                <p>
+                    Your personal wardrobe will eventually connect
+                    with the AI stylist.
+                </p>
 
             </div>
 
-            <!-- Fashion style cards -->
-             <div class="style-grid">
-               
-               <!-- Casual style -->
-                <div class="style-card">
+            <div class="wardrobe-placeholder">
 
-                  <div class="style-image casual"></div>
+                <div class="wardrobe-icon">♧</div>
 
-                  <h3>
-                     Casual
-                  </h3>
+                <h3>Your wardrobe starts here</h3>
 
-                  <p>
-                     Relaxed & Effortless
-                  </p>
+                <p>
+                    A digital space for your favourite outfits
+                    and fashion inspiration.
+                </p>
 
-                </div>
+            </div>
 
-                <!-- Elegant style -->
-                 <div class="style-card">
+        </section>
 
-                  <div class="style-image elegant"></div>
+    </main>
 
-                  <h3>
-                     Elegant
-                  </h3>
 
-                  <p>
-                     Classy & Sophisticated
-                  </p>
+    <!-- =========================
+         FOOTER
+    ========================== -->
+    <footer class="footer">
 
-                 </div>
-
-                 <!-- Streetwear style -->
-                  <div class="style-card">
-                     <div class="style-image street"></div>
-
-                     <h3>
-                        Streetwear
-                     </h3>
-
-                     <p>
-                        Bold & Expressive
-                     </p>
-
-                  </div>
-
-                  <!-- Business style -->
-                  <div class="style-card">
-
-                     <div class="style-image business"></div>
-
-                     <h3>
-                        Business
-                     </h3>
-
-                     <p>
-                        Professional & Polished
-                     </p>
-
-                  </div>
-
-             </div>
-
-           </section>
-
-           <!-- HOW IT WORKS SECTION -->
-            <section class="how-it-works" id="about">
-
-               <!-- Section heading -->
-                <div class="section-heading">
-
-                  <p class="small-title">
-                     HOW IT WORKS
-                  </p>
-
-                  <h2>
-                     Style Made Simple
-                  </h2>
-
-                </div>
-
-                <!-- Three steps -->
-                 <div class="steps">
-
-                  <!-- Step 1 -->
-                   <div class="step">
-
-                     <div class="step-number">
-                        01
-                     </div>
-
-                     <h3>
-                        Tell Us Your Style
-                     </h3>
-
-                     <p>
-                        Choose your preferred fashion style, colours,
-                        occasion and budget.
-                     </p>
-
-                   </div>
-
-                   <!-- Step 2 -->
-                  <div class="step">
-
-                     <div class="step-number">
-                        02
-                     </div>
-
-                     <h3>
-                        Let AI Create
-                     </h3>
-
-                     <p>
-                        Our AI analyzes your preferences and creates
-                        personalized outfit ideas.
-                     </p>
-
-                  </div>
-
-                  <!-- Step 3 -->
-                  <div class="step">
-
-                     <div class="step-number">
-                        03
-                     </div>
-
-                     <h3>
-                        Wear Your Look
-                     </h3>
-
-                     <p>
-                        Explore your recommendations and discover
-                        outfits you love.
-                     </p>
-
-                  </div>
-
-                 </div>
-
-            </section>
-
-            <!-- AI STYLIST SECTION -->
-            <section class="ai-stylist" id="stylist">
-
-               <!-- AI stylist introduction -->
-                <div class="ai-content">
-
-                  <p class="small-title">
-                     MEET YOUR AI STYLIST
-                  </p>
-
-                  <h2>
-                     Your Style.
-                     <span>Powered by AI.</span>
-                  </h2>
-
-                  <p>
-                     Tell StyleAI what you're looking for and receive
-                     personalized outfit recommendations in seconds.
-                  </p>
-
-                  <!-- This button will later connect to Python -->
-                   <button class="primary-btn" id="stylistButton">
-                     Try AI Stylist
-
-                     <span class="arrow">
-                        →
-                    </span>
-
-                   </button>
-
-                </div>
-
-                <!-- Example AI chat interface -->
-               <div class="ai-box">
-
-                  <!-- Example user message -->
-                  <div class="chat-message user-message">
-                     I need an elegant outfit for a wedding.
-                  </div>
-
-                  <!-- Example AI response -->
-                   <div class="chat-message ai-message">
-                     ✨ I'd recommend a Sophisticated evening dress
-                     paired with gold accessories and elegant heels.
-                   </div>
-
-                   <!-- Chat input area -->
-                  <div class="chat-input">
-
-                     <input type="text" id="styleInput" placeholder="Ask your AI stylist...">
-
-                     <button id="sendStyleButton">
-                        ➤
-                     </button>
-
-                  </div>
-
-               </div>
-
-            </section>
-
-            <!-- WARDRODE SECTION -->
-            <section class="Wardrobe-section" id="Wardrobe">
-
-               <div class="section-heading">
-
-                  <p class="small-title">
-                     YOUR DIGITAL WARDROBE
-                  </p>
-
-                  <h2>
-                     Your Clothers.
-
-                  <span>Your Style</span>
-
-                  </h2>
-
-                  <p>
-                     Your personal wardrobe will eventually 
-                     connect with the AI stylist.
-                  </p>
-
-               </div>
-
-            </section>
-
-      </main>
-
-      <!-- FOOTER -->
-       <footer>
-
-         <!-- Footer logo -->
-          <div class="footer-logo">
+        <a href="#home" class="footer-logo">
             Style<span>AI</span>
-          </div>
+        </a>
 
-          <!-- Website description -->
-         <p>
-            Your personal AI-powered fashion stylist.
-         </p>
+        <p>Your personal AI-powered fashion stylist.</p>
 
-         <!-- Footer navigation -->
-         <div class="footer-links">
+        <div class="footer-links">
 
             <a href="#home">Home</a>
             <a href="#discover">Discover</a>
@@ -425,18 +593,87 @@
             <a href="#wardrobe">Wardrobe</a>
             <a href="#about">About</a>
 
-         </div>
+        </div>
 
-         <!-- Copyright -->
-          <p class="Copyright">
+        <p class="copyright">
             © 2026 StyleAI. All rights reserved.
-          </p>
+        </p>
 
-       </footer>
+    </footer>
 
-       <!-- connect JavaScript to our HTML -->
-      <script src="script.js"></script>
+    <dialog class="auth-dialog" id="authDialog" aria-labelledby="authTitle">
+        <form class="auth-form" id="signInForm">
+            <button
+                type="button"
+                class="auth-close"
+                id="closeAuthDialog"
+                aria-label="Close sign-in dialog"
+            >
+                ×
+            </button>
+            <p class="small-title">WELCOME TO STYLEAI</p>
+            <h2 id="authTitle">Sign in</h2>
+            <p class="auth-demo-note">
+                Demo only: account profiles stay in this browser. Passwords
+                aren't saved or verified by an account service.
+            </p>
+            <div class="auth-field" id="authNameField" hidden>
+                <label for="authName">Full name</label>
+                <input
+                    type="text"
+                    id="authName"
+                    name="name"
+                    autocomplete="name"
+                    minlength="2"
+                    maxlength="80"
+                    required
+                >
+            </div>
+            <div class="auth-field" id="authNicknameField" hidden>
+                <label for="authNickname">Nickname</label>
+                <input
+                    type="text"
+                    id="authNickname"
+                    name="nickname"
+                    autocomplete="username"
+                    minlength="3"
+                    maxlength="30"
+                    pattern="[A-Za-z0-9._-]+"
+                    title="Use 3–30 letters, numbers, periods, underscores, or hyphens."
+                    required
+                >
+            </div>
+            <label for="authIdentifier" id="authIdentifierLabel">
+                Nickname or email
+            </label>
+            <input
+                type="text"
+                id="authIdentifier"
+                name="identifier"
+                autocomplete="username"
+                placeholder="Enter your nickname or email"
+                required
+            >
+            <label for="authPassword">Password</label>
+            <input
+                type="password"
+                id="authPassword"
+                name="password"
+                autocomplete="current-password"
+                required
+            >
+            <p class="auth-feedback" id="authFeedback" role="status" aria-live="polite"></p>
+            <button type="submit" class="primary-btn auth-submit">
+                Sign in
+            </button>
+            <button type="button" class="auth-mode-toggle" id="authModeToggle">
+                Don't have an account? Sign up
+            </button>
+        </form>
+    </dialog>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
 
 </body>
-
 </html>
