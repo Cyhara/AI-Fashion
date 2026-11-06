@@ -5,6 +5,8 @@
 # FastAPI creates our backend API
 from fastapi import FastAPI, UploadFile, File
 
+from pydantic import BaseModel
+
 # Allows frontend and backend to communicate
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -17,11 +19,27 @@ import os
 # Ued to communicate with claid
 import requests
 
+import cloudinary
+import cloudinary.uploader
+
 # LOAD ENVIRONMENT VARIABLES
 load_dotenv()
 
 # Get claid API key
 CLAID_API_KEY = os.getenv("CLAID_API_KEY")
+
+# CLOUDINARY CONFIGURATION
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+    secure=True
+)
+
+# DATA RECEIVED FROM THE FRONTEND
+class OutfitRequest(BaseModel):
+    model_image_url: str
+    clothing_image_url: str
 
 # CREATE FASTAPI APPLICATION
 app = FastAPI(
@@ -89,36 +107,45 @@ def claid_test():
 
 # GENERATE OUTFIT
 @app.post("/generate-outfit")
-async def generate_outfit(
-    model_image: UploadFile,
-    clothing_image: UploadFile
-):
+async def generate_outfit(outfit: OutfitRequest):
 
     # CHECK API KEY
     if not CLAID_API_KEY:
-
         return {
             "success": False,
-            "message": "claid API key is missing."
+            "message": "Claid API key is missing."
+        }
+
+    # CHECK THAT BOTH URLS COME FROM CLOUDINARY
+    if not outfit.model_image_url.startswith(
+        "https://res.cloudinary.com/"
+    ):
+        return {
+            "success": False,
+            "message": "Invalid model image URL."
+        }
+
+    if not outfit.clothing_image_url.startswith(
+        "https://res.cloudinary.com/"
+    ):
+        return {
+            "success": False,
+            "message": "Invalid clothing image URL."
         }
 
     # CLAID REQUEST HEADERS
     headers = {
-
-        # Claid requires Bearer Authentication
         "Authorization": f"Bearer {CLAID_API_KEY}",
-
-        # Tell claid we are sending JSON data
-        "content-Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "application/json"
     }
 
     # REQUEST DATA
     payload = {
         "input": {
-            "model": model_image,
+            "model": outfit.model_image_url,
             "clothing": [
-                clothing_image
+                outfit.clothing_image_url
             ]
         },
         "options": {
@@ -134,7 +161,6 @@ async def generate_outfit(
 
     # SEND REQUEST TO CLAID
     try:
-
         response = requests.post(
             CLAID_URL,
             headers=headers,
@@ -142,57 +168,57 @@ async def generate_outfit(
             timeout=60
         )
 
-        # CHECK RESPONSE
         if response.status_code >= 400:
-
             return {
                 "success": False,
                 "status_code": response.status_code,
                 "message": response.text
             }
 
-        # Convert claid response to JSON
         result = response.json()
 
-        # RETURN RESULT TO FRONTEND
+        # GET TASK INFORMATION
+        task_data = result.get("data", {})
+
         return {
             "success": True,
-            "result": result
+            "message": "Outfit generation started.",
+            "task_id": task_data.get("id"),
+            "status": task_data.get("status"),
+            "result_url": task_data.get("result_url")
         }
 
-    # HANDLE CONNECTION ERRORS
     except requests.RequestException as error:
-
         return {
             "success": False,
             "message": "Could not connect to Claid.",
             "error": str(error)
         }
 
+
+# CHECK GENERATED OUTFIT
 @app.get("/generate-outfit/{task_id}")
 def get_outfit(task_id: int):
-    # Check that the API key exists
+
+    # CHECK API KEY
     if not CLAID_API_KEY:
         return {
             "success": False,
             "message": "Claid API key is missing."
         }
 
-    # Headers for Claid
     headers = {
         "Authorization": f"Bearer {CLAID_API_KEY}",
         "Accept": "application/json"
     }
 
     try:
-        # Ask Claid for the status of the generation
         response = requests.get(
             f"{CLAID_URL}/{task_id}",
             headers=headers,
             timeout=60
         )
 
-        # Return Claid error
         if response.status_code >= 400:
             return {
                 "success": False,
@@ -200,12 +226,52 @@ def get_outfit(task_id: int):
                 "message": response.text
             }
 
-        # Convert response to JSON
         result = response.json()
 
+        # GET TASK DATA
+        task_data = result.get("data", {})
+        status = task_data.get("status")
+
+        # CHECK IF GENERATION FAILED
+        if status == "ERROR":
+            return {
+                "success": False,
+                "status": status,
+                "message": "Claid could not generate the outfit.",
+                "errors": task_data.get("errors", [])
+            }
+
+        # CHECK IF GENERATION IS COMPLETE
+        if status == "DONE":
+
+            output_objects = (
+                task_data.get("result", {})
+                .get("output_objects", [])
+            )
+
+            if not output_objects:
+                return {
+                    "success": False,
+                    "status": status,
+                    "message": "Generation finished, but no output image was returned."
+                }
+
+            # GET GENERATED IMAGE URL
+            image_url = output_objects[0].get("tmp_url")
+
+            return {
+                "success": True,
+                "status": status,
+                "message": "Outfit generated successfully.",
+                "image_url": image_url
+            }
+
+        # STILL PROCESSING
         return {
             "success": True,
-            "result": result
+            "status": status,
+            "message": "Your outfit is still being generated.",
+            "image_url": None
         }
 
     except requests.RequestException as error:
@@ -215,51 +281,78 @@ def get_outfit(task_id: int):
             "error": str(error)
         }
 
+# UPLOAD IMAGES TO CLOUDINARY
 @app.post("/upload-images")
 async def upload_images(
     model_image: UploadFile = File(...),
     clothing_image: UploadFile = File(...)
 ):
-    """
-    Receives the model photo and clothing photo
-    from the StyleAI frontend.
-    """
 
     # Allowed image formats
     allowed_types = {
         "image/jpeg",
         "image/png",
         "image/jpg",
-        "image/gif",
         "image/webp",
-        "image/bmp",
-        "image/avif",
-        "image/heic"
+        "image/avif"
     }
 
-    # Check model image type
+    # Check model image
     if model_image.content_type not in allowed_types:
         return {
             "success": False,
-            "message": f"Model image type is not supported: {model_image.content_type}"
+            "message": "Unsupported model image format."
         }
 
-    # Check clothing image type
+    # Check clothing image
     if clothing_image.content_type not in allowed_types:
         return {
             "success": False,
-            "message": f"Clothing image type is not supported: {clothing_image.content_type}"
+            "message": "Unsupported clothing image format."
         }
 
-    return {
-        "success": True,
-        "message": "Images uploaded successfully.",
-        "model_image": {
-            "filename": model_image.filename,
-            "content_type": model_image.content_type
-        },
-        "clothing_image": {
-            "filename": clothing_image.filename,
-            "content_type": clothing_image.content_type
+    try:
+
+        # Read model image
+        model_content = await model_image.read()
+
+        # Read clothing image
+        clothing_content = await clothing_image.read()
+
+        # Upload model image to Cloudinary
+        model_result = cloudinary.uploader.upload(
+            model_content,
+            folder="styleai/models",
+            resource_type="image"
+        )
+
+        # Upload clothing image to Cloudinary
+        clothing_result = cloudinary.uploader.upload(
+            clothing_content,
+            folder="styleai/clothing",
+            resource_type="image"
+        )
+
+        # Return uploaded image URLs
+        return {
+            "success": True,
+            "message": "Images uploaded successfully.",
+
+            "model_image": {
+                "filename": model_image.filename,
+                "url": model_result["secure_url"]
+            },
+
+            "clothing_image": {
+                "filename": clothing_image.filename,
+                "url": clothing_result["secure_url"]
+            }
         }
-    }
+
+    except Exception as error:
+
+        return {
+            "success": False,
+            "message": "Image upload failed.",
+            "error": str(error)
+        }
